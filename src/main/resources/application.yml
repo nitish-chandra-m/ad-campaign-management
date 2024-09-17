@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: ad-campaign-tool
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+  datasource:
+    name: ad-management
+    platform: postgres
+    url: jdbc:postgresql://127.0.0.1:5432/admanagement
+    username: postgres
+    password: random123
+    driverClassName: org.postgresql.Driver
