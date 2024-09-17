@@ -6,7 +6,11 @@ import org.springframework.stereotype.Service;
 public class CampaignMapper {
 
     public Campaign toCampaign(CampaignDto campaignDto) {
-        return new Campaign(campaignDto.name(), campaignDto.startTimestamp(), campaignDto.endTimestamp(), campaignDto.channel(), campaignDto.screen(), campaignDto.placement(), campaignDto.status(), campaignDto.regions(), campaignDto.budget());
+        if (campaignDto.channel().equals("DISPLAY")) {
+            return new Campaign(campaignDto.name(), campaignDto.startTimestamp(), campaignDto.endTimestamp(), campaignDto.channel(), campaignDto.screen(), campaignDto.placement(), campaignDto.status(), campaignDto.regions(), campaignDto.budget());
+        } else {
+            return new Campaign(campaignDto.name(), campaignDto.startTimestamp(), campaignDto.endTimestamp(), campaignDto.channel(), campaignDto.status(), campaignDto.regions(), campaignDto.budget());
+        }
     }
 
     public CampaignDto toCampaignDto(Campaign campaign) {

@@ -1,6 +1,6 @@
 package com.github.nitish_chandra_m.ad_campaign_tool.campaigns;
 
-public enum CampaignStatus {
+enum Status {
     SCHEDULED,
     ACTIVE,
     PAUSED,

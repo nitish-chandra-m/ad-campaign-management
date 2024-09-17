@@ -23,7 +23,7 @@ public class CampaignController {
         return campaignService.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public CampaignDto getCampaignById(
             @NotEmpty @PathVariable("id") String id
     ) {

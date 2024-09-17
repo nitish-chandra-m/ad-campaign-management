@@ -9,16 +9,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
-enum KeywordType {
-    TARGETING,
-    NEGATIVE
-}
-
-enum MatchType {
-    BROAD,
-    EXACT
-}
-
 @Entity
 @Table(name = "keywords")
 public class Keyword {

@@ -11,23 +11,6 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
-enum Channel {
-    DISPLAY,
-    SEARCH
-}
-
-enum Screen {
-    TODAY,
-    SEARCH,
-    PRODUCT,
-    SEARCH_RESULT
-}
-
-enum Placement {
-    TOP,
-    BOTTOM
-}
-
 @Entity
 @Table(name = "campaigns")
 public class Campaign {
@@ -49,7 +32,7 @@ public class Campaign {
     private Channel channel;
     private Screen screen;
     private Placement placement;
-    private CampaignStatus status;
+    private Status status;
     private List<String> regions;
 
     @Column(nullable = false)
@@ -73,25 +56,25 @@ public class Campaign {
     }
 
 //    For SEARCH campaigns
-    public Campaign(String name, ZonedDateTime startTimestamp, ZonedDateTime endTimestamp, String channel, CampaignStatus status, List<String> regions, Double budget) {
+    public Campaign(String name, ZonedDateTime startTimestamp, ZonedDateTime endTimestamp, String channel, String status, List<String> regions, Double budget) {
         this.name = name;
         this.startTimestamp = startTimestamp;
         this.endTimestamp = endTimestamp;
         this.channel = Channel.valueOf(channel);
-        this.status = status;
+        this.status = Status.valueOf(status);
         this.regions = regions;
         this.budget = budget;
     }
 
 //    For DISPLAY campaigns
-    public Campaign(String name, ZonedDateTime startTimestamp, ZonedDateTime endTimestamp, String channel, String screen, String placement, CampaignStatus status, List<String> regions, Double budget) {
+    public Campaign(String name, ZonedDateTime startTimestamp, ZonedDateTime endTimestamp, String channel, String screen, String placement, String status, List<String> regions, Double budget) {
         this.name = name;
         this.startTimestamp = startTimestamp;
         this.endTimestamp = endTimestamp;
         this.channel = Channel.valueOf(channel);
         this.screen = Screen.valueOf(screen);
         this.placement = Placement.valueOf(placement);
-        this.status = status;
+        this.status = Status.valueOf(status);
         this.regions = regions;
         this.budget = budget;
     }
@@ -152,12 +135,12 @@ public class Campaign {
         this.placement = Placement.valueOf(placement);
     }
 
-    public CampaignStatus getStatus() {
-        return status;
+    public String getStatus() {
+        return status.name();
     }
 
-    public void setStatus(CampaignStatus status) {
-        this.status = status;
+    public void setStatus(String status) {
+        this.status = Status.valueOf(status);
     }
 
     public List<String> getRegions() {
