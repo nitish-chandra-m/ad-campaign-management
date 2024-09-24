@@ -1,10 +1,7 @@
 package com.github.nitish_chandra_m.ad_campaign_tool.events;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.github.nitish_chandra_m.ad_campaign_tool.campaigns.Campaign;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.ZonedDateTime;
 import java.util.UUID;
@@ -21,23 +18,17 @@ public class Event {
     @JoinColumn(name = "event_type_id")
     private EventType eventType;
 
-    @ManyToOne
-    @JoinColumn(name = "campaign_id")
-    @JsonBackReference
-    private Campaign campaign;
+    private UUID campaignId;
 
     @CreationTimestamp
     private ZonedDateTime createdAt;
 
-    @UpdateTimestamp
-    private ZonedDateTime updatedAt;
-
     public Event() {
     }
 
-    public Event(EventType eventType, Campaign campaign) {
+    public Event(EventType eventType, UUID campaignId) {
         this.eventType = eventType;
-        this.campaign = campaign;
+        this.campaignId = campaignId;
     }
 
     public UUID getId() {
@@ -52,8 +43,8 @@ public class Event {
         return eventType;
     }
 
-    public Campaign getCampaign() {
-        return campaign;
+    public UUID getCampaignId() {
+        return campaignId;
     }
 
     public ZonedDateTime getCreatedAt() {
@@ -62,13 +53,5 @@ public class Event {
 
     public void setCreatedAt(ZonedDateTime createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public ZonedDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(ZonedDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }

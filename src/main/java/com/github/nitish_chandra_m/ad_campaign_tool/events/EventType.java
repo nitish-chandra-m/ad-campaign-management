@@ -10,7 +10,6 @@ import java.util.List;
 //    Campaign creation
 //    Campaign update
 //    Campaign deletion
-//    Budget exhausted
 
 @Entity
 @Table(name = "event_types")

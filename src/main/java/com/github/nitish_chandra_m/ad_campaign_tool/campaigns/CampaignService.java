@@ -44,8 +44,7 @@ public class CampaignService {
     ) throws Exception {
         var campaign = campaignMapper.toCampaign(campaignDto);
         campaignRepository.save(campaign);
-        var msg = new CampaignMessage(campaignDto, "CREATED");
-        template.convertAndSend(fanout.getName(), "", msg.serializeToJSON());
+        template.convertAndSend(fanout.getName(), "", String.format("CAMPAIGN_CREATED_%s", campaign.getId().toString()));
         return campaignDto;
     }
 
@@ -56,8 +55,7 @@ public class CampaignService {
         }
         campaignRepository.deleteById(UUID.fromString(id));
 
-        var msg = new CampaignMessage(c.get(), "DELETED");
-        template.convertAndSend(fanout.getName(), "", msg.serializeToJSON());
+        template.convertAndSend(fanout.getName(), "", String.format("CAMPAIGN_DELETED_%s",id));
     }
 
     public CampaignDto updateCampaign(String id, CampaignDto campaignDto) throws Exception {
@@ -75,8 +73,7 @@ public class CampaignService {
             campaignToEdit.setPlacement(campaignDto.getPlacement());
             campaignToEdit.setStatus(campaignDto.getStatus());
             campaignToEdit.setRegions(campaignDto.getRegions());
-            var msg = new CampaignMessage(campaignDto, "UPDATED");
-            template.convertAndSend(fanout.getName(), "", msg.serializeToJSON());
+            template.convertAndSend(fanout.getName(), "", String.format("CAMPAIGN_UPDATED_%s",id));
             return campaignDto;
         }
     }

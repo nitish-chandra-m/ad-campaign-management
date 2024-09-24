@@ -1,7 +1,6 @@
 package com.github.nitish_chandra_m.ad_campaign_tool.campaigns;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.github.nitish_chandra_m.ad_campaign_tool.events.Event;
 import com.github.nitish_chandra_m.ad_campaign_tool.targetgroups.TargetGroup;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -41,10 +40,6 @@ public class Campaign {
     @OneToMany(mappedBy = "campaign", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<TargetGroup> targetGroups;
-
-    @OneToMany(mappedBy = "campaign", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<Event> events;
 
     @CreationTimestamp
     private ZonedDateTime createdAt;
