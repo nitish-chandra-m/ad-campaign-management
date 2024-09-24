@@ -38,14 +38,26 @@ public class CampaignController {
     public CampaignDto createCampaign(
           @Valid @RequestBody CampaignDto campaignDto
     ) {
-        return campaignService.createCampaign(campaignDto);
+        try {
+            return campaignService.createCampaign(campaignDto);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @DeleteMapping("/delete/{id}")
     public void deleteCampaign(
            @NotEmpty @PathVariable("id") String id
     ) {
-        campaignService.deleteById(id);
+        try {
+            campaignService.deleteById(id);
+        } catch (Exception e) {
+            if (e.getMessage().equals("Not Found")) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            } else {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
     }
 
     @PutMapping("/update/{id}")
@@ -53,7 +65,12 @@ public class CampaignController {
            @NotEmpty @PathVariable("id") String id,
            @Valid @RequestBody CampaignDto campaignDto
     ) {
-        var res = campaignService.updateCampaign(id, campaignDto);
+        CampaignDto res = null;
+        try {
+            res = campaignService.updateCampaign(id, campaignDto);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         if (res == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }

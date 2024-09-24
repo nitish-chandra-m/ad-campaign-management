@@ -1,5 +1,8 @@
 package com.github.nitish_chandra_m.ad_campaign_tool.campaigns;
 
+import org.springframework.amqp.core.FanoutExchange;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +15,12 @@ public class CampaignService {
 
     private final CampaignRepository campaignRepository;
     private final CampaignMapper campaignMapper;
+
+    @Autowired
+    private RabbitTemplate template;
+
+    @Autowired
+    private FanoutExchange fanout;
 
     public CampaignService(CampaignRepository campaignRepository, CampaignMapper campaignMapper) {
         this.campaignRepository = campaignRepository;
@@ -32,31 +41,42 @@ public class CampaignService {
 
     public CampaignDto createCampaign(
             CampaignDto campaignDto
-    ) {
+    ) throws Exception {
         var campaign = campaignMapper.toCampaign(campaignDto);
         campaignRepository.save(campaign);
+        var msg = new CampaignMessage(campaignDto, "CREATED");
+        template.convertAndSend(fanout.getName(), "", msg.serializeToJSON());
         return campaignDto;
     }
 
-    public void deleteById(String id) {
+    public void deleteById(String id) throws Exception {
+        var c = getCampaignById(id);
+        if (c.isEmpty()) {
+            throw new Exception("Not Found");
+        }
         campaignRepository.deleteById(UUID.fromString(id));
+
+        var msg = new CampaignMessage(c.get(), "DELETED");
+        template.convertAndSend(fanout.getName(), "", msg.serializeToJSON());
     }
 
-    public CampaignDto updateCampaign(String id, CampaignDto campaignDto) {
+    public CampaignDto updateCampaign(String id, CampaignDto campaignDto) throws Exception {
         var c = campaignRepository.findById(UUID.fromString(id));
         if (c.isEmpty()) {
             return null;
         } else {
             Campaign campaignToEdit = c.get();
-            campaignToEdit.setName(campaignDto.name());
-            campaignToEdit.setStartTimestamp(campaignDto.startTimestamp());
-            campaignToEdit.setEndTimestamp(campaignDto.endTimestamp());
-            campaignToEdit.setChannel(campaignDto.channel());
-            campaignToEdit.setBudget(campaignDto.budget());
-            campaignToEdit.setScreen(campaignDto.screen());
-            campaignToEdit.setPlacement(campaignDto.placement());
-            campaignToEdit.setStatus(campaignDto.status());
-            campaignToEdit.setRegions(campaignDto.regions());
+            campaignToEdit.setName(campaignDto.getName());
+            campaignToEdit.setStartTimestamp(campaignDto.getStartTimestamp());
+            campaignToEdit.setEndTimestamp(campaignDto.getEndTimestamp());
+            campaignToEdit.setChannel(campaignDto.getChannel());
+            campaignToEdit.setBudget(campaignDto.getBudget());
+            campaignToEdit.setScreen(campaignDto.getScreen());
+            campaignToEdit.setPlacement(campaignDto.getPlacement());
+            campaignToEdit.setStatus(campaignDto.getStatus());
+            campaignToEdit.setRegions(campaignDto.getRegions());
+            var msg = new CampaignMessage(campaignDto, "UPDATED");
+            template.convertAndSend(fanout.getName(), "", msg.serializeToJSON());
             return campaignDto;
         }
     }
