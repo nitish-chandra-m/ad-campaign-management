@@ -1,5 +1,6 @@
 package com.github.nitish_chandra_m.ad_campaign_tool.users;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -33,12 +34,26 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public UserDto createUser(@RequestBody UserDto userDto) {
+    public UserDto createUser(@Valid @RequestBody UserDto userDto) {
         return userService.createUser(userDto);
     }
 
-//    @PostMapping("/update/{id}")
-//
-//
-//    @PostMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
+    public void deleteUserById(@PathVariable("id") String id) {
+        try {
+            userService.deleteUserById(id);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/update/{id}")
+    public UserDto updateUser(@PathVariable String id, @Valid @RequestBody UserDto userDto) {
+        try {
+            return userService.updateUser(id, userDto);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
 }
+

@@ -30,7 +30,25 @@ public class UserService {
         return userDto;
     }
 
-    // TODO: Delete
+    public void deleteUserById(String id) throws Exception {
+        UUID uuid = UUID.fromString(id);
+        if (!userRepository.existsById(uuid)) {
+            throw new Exception("User not found");
+        }
+        userRepository.deleteById(uuid);
+    }
 
-    // TODO: Update
+    public UserDto updateUser(String id, UserDto userDto) throws Exception {
+        UUID uuid = UUID.fromString(id);
+        var user = userRepository.findById(uuid);
+        if (user.isEmpty()) {
+            throw new Exception("User not found");
+        } else {
+            User userToUpdate = user.get();
+            userToUpdate.setFirstName(userDto.firstName());
+            userToUpdate.setLastName(userDto.lastName());
+            userToUpdate.setEmail(userDto.email());
+            return userDto;
+        }
+    }
 }
