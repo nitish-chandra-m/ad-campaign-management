@@ -20,7 +20,7 @@ public class CampaignController {
 
     @GetMapping("/list")
     public List<CampaignDto> getAllCampaigns() {
-        return campaignService.findAll();
+        return campaignService.getAllCampaigns();
     }
 
     @GetMapping("/get/{id}")
@@ -50,7 +50,7 @@ public class CampaignController {
            @NotEmpty @PathVariable("id") String id
     ) {
         try {
-            campaignService.deleteById(id);
+            campaignService.deleteCampaignById(id);
         } catch (Exception e) {
             if (e.getMessage().equals("Not Found")) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND);

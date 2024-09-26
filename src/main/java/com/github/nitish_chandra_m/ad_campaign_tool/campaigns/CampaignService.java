@@ -27,7 +27,7 @@ public class CampaignService {
         this.campaignMapper = campaignMapper;
     }
 
-    public List<CampaignDto> findAll() {
+    public List<CampaignDto> getAllCampaigns() {
         return campaignRepository.findAll()
                 .stream()
                 .map(campaignMapper::toCampaignDto)
@@ -48,7 +48,7 @@ public class CampaignService {
         return campaignDto;
     }
 
-    public void deleteById(String id) throws Exception {
+    public void deleteCampaignById(String id) throws Exception {
         var c = getCampaignById(id);
         if (c.isEmpty()) {
             throw new Exception("Not Found");

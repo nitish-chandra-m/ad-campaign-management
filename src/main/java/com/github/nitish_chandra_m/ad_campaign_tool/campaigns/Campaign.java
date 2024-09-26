@@ -3,6 +3,9 @@ package com.github.nitish_chandra_m.ad_campaign_tool.campaigns;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.github.nitish_chandra_m.ad_campaign_tool.targetgroups.TargetGroup;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -10,6 +13,9 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "campaigns")
 public class Campaign {
@@ -32,6 +38,7 @@ public class Campaign {
     private Screen screen;
     private Placement placement;
     private Status status;
+
     private List<String> regions;
 
     @Column(nullable = false)
@@ -46,9 +53,6 @@ public class Campaign {
 
     @UpdateTimestamp
     private ZonedDateTime updatedAt;
-
-    public Campaign() {
-    }
 
 //    For SEARCH campaigns
     public Campaign(String name, ZonedDateTime startTimestamp, ZonedDateTime endTimestamp, String channel, String status, List<String> regions, Double budget) {
@@ -72,38 +76,6 @@ public class Campaign {
         this.status = Status.valueOf(status);
         this.regions = regions;
         this.budget = budget;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public ZonedDateTime getStartTimestamp() {
-        return startTimestamp;
-    }
-
-    public void setStartTimestamp(ZonedDateTime startTimestamp) {
-        this.startTimestamp = startTimestamp;
-    }
-
-    public ZonedDateTime getEndTimestamp() {
-        return endTimestamp;
-    }
-
-    public void setEndTimestamp(ZonedDateTime endTimestamp) {
-        this.endTimestamp = endTimestamp;
     }
 
     public String getChannel() {
@@ -138,35 +110,4 @@ public class Campaign {
         this.status = Status.valueOf(status);
     }
 
-    public List<String> getRegions() {
-        return regions;
-    }
-
-    public void setRegions(List<String> regions) {
-        this.regions = regions;
-    }
-
-    public Double getBudget() {
-        return budget;
-    }
-
-    public void setBudget(Double budget) {
-        this.budget = budget;
-    }
-
-    public List<TargetGroup> getTargetGroups() {
-        return targetGroups;
-    }
-
-    public void setTargetGroups(List<TargetGroup> targetGroups) {
-        this.targetGroups = targetGroups;
-    }
-
-    public ZonedDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public ZonedDateTime getUpdatedAt() {
-        return updatedAt;
-    }
 }

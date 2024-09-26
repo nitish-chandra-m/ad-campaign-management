@@ -1,11 +1,17 @@
 package com.github.nitish_chandra_m.ad_campaign_tool.events;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "events")
 public class Event {
@@ -23,35 +29,9 @@ public class Event {
     @CreationTimestamp
     private ZonedDateTime createdAt;
 
-    public Event() {
-    }
-
     public Event(EventType eventType, UUID campaignId) {
         this.eventType = eventType;
         this.campaignId = campaignId;
     }
 
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public EventType getEventType() {
-        return eventType;
-    }
-
-    public UUID getCampaignId() {
-        return campaignId;
-    }
-
-    public ZonedDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(ZonedDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
 }
