@@ -23,11 +23,11 @@ public class TargetGroupMapper {
         }
         Campaign campaign = c.get();
         return new TargetGroup(targetGroupDto.name(), targetGroupDto.startTimestamp(), targetGroupDto.endTimestamp(),
-                TargetGroupStatus.valueOf(targetGroupDto.status()), targetGroupDto.maxCpmBid(), campaign);
+                targetGroupDto.status(), targetGroupDto.maxCpmBid(), campaign);
     }
 
     public TargetGroupDto toTargetGroupDto(TargetGroup targetGroup) {
         return new TargetGroupDto(targetGroup.getName(), targetGroup.getStartTimestamp(), targetGroup.getEndTimestamp(),
-                targetGroup.getStatus().toString(), targetGroup.getMaxCpmBid(), targetGroup.getId().toString());
+                targetGroup.getStatus(), targetGroup.getMaxCpmBid(), targetGroup.getId().toString());
     }
 }

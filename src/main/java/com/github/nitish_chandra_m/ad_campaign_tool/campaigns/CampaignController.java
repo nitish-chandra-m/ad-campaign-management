@@ -26,7 +26,7 @@ public class CampaignController {
     @GetMapping("/get/{id}")
     public CampaignDto getCampaignById(
             @NotEmpty @PathVariable("id") String id
-    ) {
+    ) throws ResponseStatusException {
         var campaignDto = campaignService.getCampaignById(id);
         if (campaignDto.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -37,7 +37,7 @@ public class CampaignController {
     @PostMapping("/create")
     public CampaignDto createCampaign(
           @Valid @RequestBody CampaignDto campaignDto
-    ) {
+    ) throws ResponseStatusException {
         try {
             return campaignService.createCampaign(campaignDto);
         } catch (Exception e) {
@@ -48,12 +48,12 @@ public class CampaignController {
     @DeleteMapping("/delete/{id}")
     public void deleteCampaign(
            @NotEmpty @PathVariable("id") String id
-    ) {
+    ) throws ResponseStatusException {
         try {
             campaignService.deleteCampaignById(id);
         } catch (Exception e) {
             if (e.getMessage().equals("Not Found")) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
             } else {
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
             }
@@ -64,7 +64,7 @@ public class CampaignController {
     public CampaignDto updateCampaign(
            @NotEmpty @PathVariable("id") String id,
            @Valid @RequestBody CampaignDto campaignDto
-    ) {
+    ) throws ResponseStatusException {
         CampaignDto res = null;
         try {
             res = campaignService.updateCampaign(id, campaignDto);
@@ -72,7 +72,7 @@ public class CampaignController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         if (res == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         return res;
     }

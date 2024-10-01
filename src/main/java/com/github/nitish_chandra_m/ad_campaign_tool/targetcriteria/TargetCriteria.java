@@ -12,17 +12,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
-enum Gender {
-    MALE,
-    FEMALE,
-    ALL
-}
-
-enum DeviceType {
-    IPAD,
-    IPHONE
-}
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -44,6 +33,7 @@ public class TargetCriteria {
 
     @ManyToOne
     @JsonBackReference
+    @JoinColumn(name = "target_group_id")
     private TargetGroup targetGroup;
 
     @CreationTimestamp
@@ -51,6 +41,10 @@ public class TargetCriteria {
 
     @UpdateTimestamp
     private ZonedDateTime updatedAt;
+
+    public TargetCriteria(TargetGroup targetGroup) {
+        this.targetGroup = targetGroup;
+    }
 
     public TargetCriteria(Integer minAge, Integer maxAge, String gender, String region, String state, String city, String deviceType) {
         this.minAge = minAge;

@@ -59,14 +59,22 @@ public class TargetGroup {
     @UpdateTimestamp
     private ZonedDateTime updatedAt;
 
-    public TargetGroup(String name, ZonedDateTime startTimestamp, ZonedDateTime endTimestamp, TargetGroupStatus status, Double maxCpmBid, Campaign campaign) {
+    public TargetGroup(String name, ZonedDateTime startTimestamp, ZonedDateTime endTimestamp, String status,
+                       Double maxCpmBid, Campaign campaign) {
         this.name = name;
         this.startTimestamp = startTimestamp;
         this.endTimestamp = endTimestamp;
-        this.status = status;
+        this.status = TargetGroupStatus.valueOf(status);
         this.maxCpmBid = maxCpmBid;
         this.campaign = campaign;
     }
 
+    public String getStatus() {
+        return status.toString();
+    }
+
+    public void setStatus(String status) {
+        this.status = TargetGroupStatus.valueOf(status);
+    }
 }
 
