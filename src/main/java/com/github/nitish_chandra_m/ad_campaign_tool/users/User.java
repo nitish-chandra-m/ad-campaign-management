@@ -32,14 +32,22 @@ public class User {
     @Column(unique = true)
     private String email;
 
+    @NotNull
+    private String password;
+
+    @NotNull
+    private String role;
+
     public User(String email) {
         this.email = email;
     }
 
-    public User(String firstName, String lastName, String email) {
+    public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.password = password;
+        this.role = "admin";
     }
 
 }
